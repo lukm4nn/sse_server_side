@@ -1,5 +1,6 @@
 package com.qti.ktor_sse
 
+import com.google.firebase.messaging.AndroidConfig
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.Message
 import com.google.firebase.messaging.Notification
@@ -17,6 +18,9 @@ object FcmService {
                 .setBody(content)
                 .build())
             .putData("type", "WAKE_SSE")
+            .setAndroidConfig(AndroidConfig.builder()
+                .setPriority(AndroidConfig.Priority.HIGH)
+                .build())
             .build()
 
         try {

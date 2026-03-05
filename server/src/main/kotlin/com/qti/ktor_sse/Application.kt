@@ -28,7 +28,7 @@ fun main() {
 
 fun initFirebase() {
     val serviceAccount =
-        FileInputStream("firebase-service-account.json")
+        FileInputStream("server/firebase-service-account.json")
 
     val options = FirebaseOptions.builder()
         .setCredentials(GoogleCredentials.fromStream(serviceAccount))
