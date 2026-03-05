@@ -3,12 +3,19 @@ package com.qti.ktor_sse
 object NotificationService {
 
     fun notifyUser(userId: String, message: String) {
-
-        if (PresenceManager.isOnline(userId)) {
+        // Coba kirim lewat SSE dulu
+        val sseSent = if (PresenceManager.isOnline(userId)) {
             SseSessionManager.send(userId, message)
-
         } else {
-            FcmService.sendWake(userId)
+            false
+        }
+
+        // Jika SSE gagal atau user memang offline, gunakan FCM sebagai fallback
+        if (!sseSent) {
+            println("User $userId tidak terjangkau lewat SSE. Mengirim pesan bangun via FCM...")
+            FcmService.sendNotification(userId, message)
+        } else {
+            println("Notifikasi berhasil dikirim ke $userId via SSE.")
         }
     }
 }
