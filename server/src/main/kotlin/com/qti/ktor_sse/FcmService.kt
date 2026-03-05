@@ -11,20 +11,17 @@ object FcmService {
 
         val message = Message.builder()
             .setToken(token)
-            // Gunakan .setNotification untuk muncul di tray,
-            // atau .putData untuk background processing
-            .setNotification(Notification.builder()
-                .setTitle("Update Baru")
-                .setBody(content)
-                .build())
             .putData("type", "WAKE_SSE")
+            .putData("title", "Update Baru")
+            .putData("content", content)
             .setAndroidConfig(AndroidConfig.builder()
-                .setPriority(AndroidConfig.Priority.HIGH)
+                .setPriority(AndroidConfig.Priority.HIGH) // Tetap HIGH agar bangun
                 .build())
             .build()
 
         try {
             FirebaseMessaging.getInstance().send(message)
+            println("FCM Data Message terkirim ke $userId")
         } catch (e: Exception) {
             println("Gagal kirim FCM: ${e.message}")
         }
